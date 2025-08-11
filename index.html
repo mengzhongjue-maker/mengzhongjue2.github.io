@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>自定义图片消消乐</title>
+    <title>图片消消乐</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
     
@@ -13,10 +13,9 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: '#4F46E5',
+                        primary: '#6366F1',
                         secondary: '#10B981',
                         accent: '#F59E0B',
-                        dark: '#1F2937'
                     },
                     fontFamily: {
                         game: ['"Comic Sans MS"', 'cursive', 'sans-serif']
@@ -31,11 +30,11 @@
             .content-auto {
                 content-visibility: auto;
             }
-            .tile-effect {
-                transition: all 0.2s ease;
+            .tile-hover {
+                @apply transform scale-105 shadow-md transition-all duration-200;
             }
             .tile-selected {
-                @apply ring-4 ring-accent scale-105;
+                @apply ring-4 ring-accent;
             }
             .消除动画 {
                 animation:消除 0.4s ease-out forwards;
@@ -48,38 +47,31 @@
             .下落动画 {
                 transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             }
-            .fade-in {
-                animation: fadeIn 0.3s ease-out forwards;
-            }
-            @keyframes fadeIn {
-                from { opacity: 0; }
-                to { opacity: 1; }
-            }
         }
     </style>
 </head>
-<body class="bg-gradient-to-br from-indigo-50 to-purple-100 min-h-screen font-game text-dark">
+<body class="bg-gradient-to-br from-indigo-50 to-purple-100 min-h-screen font-game">
     <div class="container mx-auto px-4 py-6 max-w-5xl">
         <!-- 标题区域 -->
         <header class="text-center mb-6">
-            <h1 class="text-[clamp(1.8rem,4vw,3rem)] font-bold text-primary mb-2">
+            <h1 class="text-[clamp(1.8rem,5vw,3rem)] font-bold text-primary mb-2">
                 <i class="fa fa-th-large mr-2"></i>图片消消乐
             </h1>
-            <p class="text-gray-600 mb-4">自定义图片，挑战后分享给好友！</p>
+            <p class="text-gray-600 mb-4">设置图片，生成短链接分享给好友</p>
         </header>
         
         <!-- 游戏状态区域 -->
         <div class="flex flex-wrap justify-center gap-3 md:gap-6 mb-6">
             <div class="bg-white rounded-xl shadow-md px-4 py-2 md:px-6 md:py-3 flex items-center">
-                <i class="fa fa-star text-accent text-xl md:text-2xl mr-2"></i>
+                <i class="fa fa-star text-accent text-xl mr-2"></i>
                 <span class="font-bold">分数:</span>
-                <span id="score" class="ml-2 text-xl md:text-2xl font-bold text-primary">0</span>
+                <span id="score" class="ml-2 text-xl font-bold text-primary">0</span>
             </div>
             
             <div class="bg-white rounded-xl shadow-md px-4 py-2 md:px-6 md:py-3 flex items-center">
-                <i class="fa fa-clock-o text-secondary text-xl md:text-2xl mr-2"></i>
+                <i class="fa fa-clock-o text-secondary text-xl mr-2"></i>
                 <span class="font-bold">时间:</span>
-                <span id="time" class="ml-2 text-xl md:text-2xl font-bold text-primary">60</span>
+                <span id="time" class="ml-2 text-xl font-bold text-primary">60</span>
             </div>
             
             <button id="resetBtn" class="bg-primary hover:bg-primary/90 text-white rounded-xl shadow-md px-4 py-2 md:px-6 md:py-3 flex items-center transition-all">
@@ -100,10 +92,10 @@
                 </div>
             </div>
             
-            <!-- 侧边面板 - 图片设置或游戏信息 -->
+            <!-- 侧边面板 -->
             <div class="w-full lg:w-72">
                 <!-- 图片设置面板 -->
-                <div id="imageSetupPanel" class="bg-white rounded-2xl shadow-lg p-5 fade-in">
+                <div id="imageSetupPanel" class="bg-white rounded-2xl shadow-lg p-5">
                     <h2 class="text-xl font-bold text-primary mb-4 flex items-center">
                         <i class="fa fa-picture-o mr-2"></i>设置游戏图片
                     </h2>
@@ -111,39 +103,36 @@
                     <p class="text-gray-600 text-sm mb-4">上传4张图片（设置后不可更改）</p>
                     
                     <div class="space-y-4">
-                        <!-- 图片1上传 -->
+                        <!-- 图片上传区域 -->
                         <div class="space-y-2">
                             <label class="block text-gray-700 text-sm font-medium">图片1</label>
                             <div class="flex gap-2">
                                 <input type="file" id="img1" accept="image/*" class="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm">
-                                <img id="preview1" src="https://picsum.photos/seed/img1/60/60" alt="图片1预览" class="w-10 h-10 object-cover rounded-lg border border-gray-200">
+                                <img id="preview1" src="https://raw.githubusercontent.com/mengzhongjue-maker/mengzhongjue2.github.io/beb6229eb3d976e4823c59fa4b75733ef546d717/a.jpeg" alt="图片1预览" class="w-10 h-10 object-cover rounded-lg border border-gray-200">
                             </div>
                         </div>
                         
-                        <!-- 图片2上传 -->
                         <div class="space-y-2">
                             <label class="block text-gray-700 text-sm font-medium">图片2</label>
                             <div class="flex gap-2">
                                 <input type="file" id="img2" accept="image/*" class="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm">
-                                <img id="preview2" src="https://picsum.photos/seed/img2/60/60" alt="图片2预览" class="w-10 h-10 object-cover rounded-lg border border-gray-200">
+                                <img id="preview2" src="https://raw.githubusercontent.com/mengzhongjue-maker/mengzhongjue2.github.io/beb6229eb3d976e4823c59fa4b75733ef546d717/b.jpeg" alt="图片2预览" class="w-10 h-10 object-cover rounded-lg border border-gray-200">
                             </div>
                         </div>
                         
-                        <!-- 图片3上传 -->
                         <div class="space-y-2">
                             <label class="block text-gray-700 text-sm font-medium">图片3</label>
                             <div class="flex gap-2">
                                 <input type="file" id="img3" accept="image/*" class="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm">
-                                <img id="preview3" src="https://picsum.photos/seed/img3/60/60" alt="图片3预览" class="w-10 h-10 object-cover rounded-lg border border-gray-200">
+                                <img id="preview3" src="https://raw.githubusercontent.com/mengzhongjue-maker/mengzhongjue2.github.io/beb6229eb3d976e4823c59fa4b75733ef546d717/c.jpeg" alt="图片3预览" class="w-10 h-10 object-cover rounded-lg border border-gray-200">
                             </div>
                         </div>
                         
-                        <!-- 图片4上传 -->
                         <div class="space-y-2">
                             <label class="block text-gray-700 text-sm font-medium">图片4</label>
                             <div class="flex gap-2">
                                 <input type="file" id="img4" accept="image/*" class="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm">
-                                <img id="preview4" src="https://picsum.photos/seed/img4/60/60" alt="图片4预览" class="w-10 h-10 object-cover rounded-lg border border-gray-200">
+                                <img id="preview4" src="https://raw.githubusercontent.com/mengzhongjue-maker/mengzhongjue2.github.io/beb6229eb3d976e4823c59fa4b75733ef546d717/d.jpeg" alt="图片4预览" class="w-10 h-10 object-cover rounded-lg border border-gray-200">
                             </div>
                         </div>
                         
@@ -177,13 +166,6 @@
                                 <li>• 时间结束前获得高分</li>
                             </ul>
                         </div>
-                        
-                        <div class="p-3 bg-yellow-50 rounded-lg">
-                            <h3 class="font-bold text-yellow-700 mb-2 text-sm">提示</h3>
-                            <p class="text-xs text-gray-600">
-                                尝试寻找能形成多个匹配的交换，这将帮助你获得更高分数！
-                            </p>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -191,9 +173,9 @@
         
         <!-- 分享弹窗 -->
         <div id="shareModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden">
-            <div class="bg-white rounded-2xl p-6 max-w-md w-full mx-4 transform transition-all">
+            <div class="bg-white rounded-2xl p-6 max-w-md w-full mx-4">
                 <h3 class="text-xl font-bold text-primary mb-3 flex items-center">
-                    <i class="fa fa-share-alt mr-2"></i>分享你的游戏
+                    <i class="fa fa-share-alt mr-2"></i>分享游戏
                 </h3>
                 
                 <p class="text-gray-600 text-sm mb-4">复制链接，好友可使用相同图片玩游戏：</p>
@@ -203,6 +185,10 @@
                     <button id="copyLinkBtn" class="bg-primary hover:bg-primary/90 text-white px-3 py-2 rounded-r-lg transition-all">
                         <i class="fa fa-copy"></i>
                     </button>
+                </div>
+                
+                <div class="text-xs text-gray-500 mb-4">
+                    链接示例: <code>https://你的用户名.github.io/?g=abc123</code>
                 </div>
                 
                 <button id="closeShareBtn" class="w-full bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-lg py-2.5 font-medium transition-all">
@@ -252,7 +238,9 @@
             gridSize: 6,        // 6x6网格
             tileTypes: 4,       // 图片类型数量
             timeLimit: 60,      // 时间限制(秒)
-            pointsPerTile: 10   // 每个方块的分数
+            pointsPerTile: 10,  // 每个方块的分数
+            storageKey: 'matchGameData', // 本地存储键名
+            shortCodeLength: 6  // 短代码长度
         };
         
         // 游戏状态
@@ -263,13 +251,14 @@
             isProcessing: false,// 是否正在处理动画
             selectedTile: null, // 选中的方块
             timer: null,        // 计时器
-            images: [           // 图片资源
-                "https://picsum.photos/seed/img1/60/60",
-                "https://picsum.photos/seed/img2/60/60",
-                "https://picsum.photos/seed/img3/60/60",
-                "https://picsum.photos/seed/img4/60/60"
+            images: [           // 图片资源 - 已替换为指定的GitHub图片
+                "https://raw.githubusercontent.com/mengzhongjue-maker/mengzhongjue2.github.io/beb6229eb3d976e4823c59fa4b75733ef546d717/a.jpeg",
+                "https://raw.githubusercontent.com/mengzhongjue-maker/mengzhongjue2.github.io/beb6229eb3d976e4823c59fa4b75733ef546d717/b.jpeg",
+                "https://raw.githubusercontent.com/mengzhongjue-maker/mengzhongjue2.github.io/beb6229eb3d976e4823c59fa4b75733ef546d717/c.jpeg",
+                "https://raw.githubusercontent.com/mengzhongjue-maker/mengzhongjue2.github.io/beb6229eb3d976e4823c59fa4b75733ef546d717/d.jpeg"
             ],
             imagesSet: false,   // 图片是否已设置
+            gameId: null,       // 游戏唯一标识符
             shareUrl: ""        // 分享链接
         };
         
@@ -300,8 +289,11 @@
         
         // 初始化游戏
         function initGame() {
-            // 检查URL中是否有分享的图片数据
-            checkSharedImages();
+            // 从本地存储加载数据
+            loadGameData();
+            
+            // 检查URL中是否有游戏ID
+            checkGameIdInUrl();
             
             // 重置游戏状态
             game.grid = createGrid();
@@ -333,30 +325,97 @@
             updateShareButton();
         }
         
-        // 检查URL中是否有分享的图片数据
-        function checkSharedImages() {
+        // 生成随机游戏ID
+        function generateGameId() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let result = '';
+            for (let i = 0; i < CONFIG.shortCodeLength; i++) {
+                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return result;
+        }
+        
+        // 检查URL中是否有游戏ID
+        function checkGameIdInUrl() {
             const params = new URLSearchParams(window.location.search);
-            const imageData = params.get('images');
+            const gameId = params.get('g');
             
-            if (imageData) {
-                try {
-                    // 解码并解析图片数据
-                    const decoded = atob(imageData);
-                    const images = JSON.parse(decoded);
+            if (gameId) {
+                // 尝试从本地存储加载该游戏ID的配置
+                loadGameByID(gameId);
+            }
+        }
+        
+        // 加载指定ID的游戏配置
+        function loadGameByID(gameId) {
+            const storedData = localStorage.getItem(CONFIG.storageKey);
+            if (storedData) {
+                const allGames = JSON.parse(storedData);
+                if (allGames[gameId]) {
+                    game.images = allGames[gameId].images;
+                    game.imagesSet = true;
+                    game.gameId = gameId;
                     
-                    if (Array.isArray(images) && images.length === CONFIG.tileTypes) {
-                        game.images = images;
-                        game.imagesSet = true;
-                        
-                        // 更新预览图
-                        for (let i = 0; i < CONFIG.tileTypes; i++) {
-                            document.getElementById(`preview${i+1}`).src = images[i];
-                        }
+                    // 更新预览图
+                    for (let i = 0; i < CONFIG.tileTypes; i++) {
+                        document.getElementById(`preview${i+1}`).src = game.images[i];
                     }
-                } catch (e) {
-                    console.error('解析分享图片失败:', e);
                 }
             }
+        }
+        
+        // 保存游戏数据到本地存储
+        function saveGameData() {
+            if (!game.gameId) {
+                game.gameId = generateGameId();
+            }
+            
+            const storedData = localStorage.getItem(CONFIG.storageKey) || '{}';
+            const allGames = JSON.parse(storedData);
+            
+            // 只保存必要的配置
+            allGames[game.gameId] = {
+                images: game.images,
+                created: new Date().toISOString()
+            };
+            
+            // 限制存储的游戏数量，防止占用过多空间
+            const gameIds = Object.keys(allGames);
+            if (gameIds.length > 20) {
+                // 删除最早的游戏配置
+                const oldestId = gameIds.sort((a, b) => allGames[a].created.localeCompare(allGames[b].created))[0];
+                delete allGames[oldestId];
+            }
+            
+            localStorage.setItem(CONFIG.storageKey, JSON.stringify(allGames));
+        }
+        
+        // 从本地存储加载游戏数据
+        function loadGameData() {
+            const storedData = localStorage.getItem('matchGameUserConfig');
+            if (storedData) {
+                const userConfig = JSON.parse(storedData);
+                if (userConfig.imagesSet) {
+                    game.images = userConfig.images;
+                    game.imagesSet = true;
+                    
+                    // 更新预览图
+                    for (let i = 0; i < CONFIG.tileTypes; i++) {
+                        document.getElementById(`preview${i+1}`).src = game.images[i];
+                    }
+                }
+            }
+        }
+        
+        // 保存用户配置
+        function saveUserConfig() {
+            const userConfig = {
+                images: game.images,
+                imagesSet: true,
+                updated: new Date().toISOString()
+            };
+            
+            localStorage.setItem('matchGameUserConfig', JSON.stringify(userConfig));
         }
         
         // 创建游戏网格
@@ -407,7 +466,7 @@
                     const tile = document.createElement('div');
                     const type = game.grid[row][col];
                     
-                    tile.className = 'bg-white rounded-md shadow-sm overflow-hidden cursor-pointer tile-effect flex items-center justify-center';
+                    tile.className = 'bg-white rounded-md shadow-sm overflow-hidden cursor-pointer flex items-center justify-center';
                     tile.dataset.row = row;
                     tile.dataset.col = col;
                     
@@ -415,7 +474,7 @@
                     const img = document.createElement('img');
                     img.src = game.images[type];
                     img.alt = `游戏图片 ${type + 1}`;
-                    img.className = 'w-full h-full object-cover';
+                    img.className = 'w-full h-full object-cover transition-all duration-200';
                     
                     tile.appendChild(img);
                     
@@ -425,13 +484,13 @@
                     // 添加悬停效果
                     tile.addEventListener('mouseenter', () => {
                         if (!game.isProcessing && !game.selectedTile) {
-                            tile.classList.add('scale-105', 'shadow');
+                            tile.classList.add('tile-hover');
                         }
                     });
                     
                     tile.addEventListener('mouseleave', () => {
                         if (!game.isProcessing && !game.selectedTile) {
-                            tile.classList.remove('scale-105', 'shadow');
+                            tile.classList.remove('tile-hover');
                         }
                     });
                     
@@ -713,10 +772,43 @@
                     if (game.imagesSet) return;
                     
                     if (e.target.files && e.target.files[0]) {
+                        // 压缩图片以减少数据量
+                        const img = new Image();
                         const reader = new FileReader();
                         
                         reader.onload = (event) => {
-                            preview.src = event.target.result;
+                            img.onload = function() {
+                                // 创建画布用于压缩
+                                const canvas = document.createElement('canvas');
+                                const ctx = canvas.getContext('2d');
+                                
+                                // 设定最大尺寸
+                                const maxSize = 150;
+                                let width = img.width;
+                                let height = img.height;
+                                
+                                // 等比例缩小图片
+                                if (width > height) {
+                                    if (width > maxSize) {
+                                        height *= maxSize / width;
+                                        width = maxSize;
+                                    }
+                                } else {
+                                    if (height > maxSize) {
+                                        width *= maxSize / height;
+                                        height = maxSize;
+                                    }
+                                }
+                                
+                                canvas.width = width;
+                                canvas.height = height;
+                                ctx.drawImage(img, 0, 0, width, height);
+                                
+                                // 获取压缩后的图片数据
+                                const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.8);
+                                preview.src = compressedDataUrl;
+                            };
+                            img.src = event.target.result;
                         };
                         
                         reader.readAsDataURL(e.target.files[0]);
@@ -748,13 +840,15 @@
         
         // 生成分享链接
         function generateShareLink() {
-            // 将图片数据编码到URL中
-            const imageData = JSON.stringify(game.images);
-            const encodedData = btoa(imageData);
+            // 确保有游戏ID
+            if (!game.gameId) {
+                game.gameId = generateGameId();
+                saveGameData();
+            }
             
-            // 构建分享URL
+            // 构建短链接
             const baseUrl = window.location.origin + window.location.pathname;
-            game.shareUrl = `${baseUrl}?images=${encodedData}`;
+            game.shareUrl = `${baseUrl}?g=${game.gameId}`;
             
             // 更新分享链接输入框
             elements.shareLink.value = game.shareUrl;
@@ -780,6 +874,9 @@
             }
             
             game.imagesSet = true;
+            saveUserConfig();  // 保存用户配置
+            saveGameData();    // 保存游戏数据用于分享
+            
             elements.confirmModal.classList.add('hidden');
             showGamePanel();
             renderGrid();
